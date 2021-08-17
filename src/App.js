@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { Login, Signup, Profile, Chats } from "./pages";
+import { Login, Signup, Profile, Chats, Home } from "./pages";
 
 function App() {
   return (
@@ -10,6 +10,7 @@ function App() {
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/profile" component={Profile} />
         <Route exact path="/chats" component={Chats} />
+        <Route exact path="/home" component={Home} />
       </Switch>
     </Router>
   );
