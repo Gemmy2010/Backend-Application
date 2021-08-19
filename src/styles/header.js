@@ -21,6 +21,11 @@ const HeaderLeft = styled.div``;
 const HeaderLogo = styled.img`
   width: 180px;
 `;
-const HeaderRight = styled.div``;
+const HeaderRight = styled.div`
+  display: none;
+  @media only screen and (max-width: 768px) {
+    display: block;
+  }
+`;
 
 export { HeaderWrapper, HeaderContainer, HeaderLeft, HeaderLogo, HeaderRight };

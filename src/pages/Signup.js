@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { FaGoogle } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
-import styled from "styled-components";
+import { FaGoogle } from "react-icons/fa";
 
 import {
   AuthSection,
@@ -27,27 +27,39 @@ import {
   FormPara,
 } from "../styles/form";
 
-import firebase from "../firebase";
+import { userSignup, goolgeAuthSignUp } from "../redux/actions/usersAction";
+
+import { DotsSpinner } from "../components/Spinner";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
+
   const [name, setName] = useState("");
+
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState(null);
 
-  const handleFormSignin = (e) => {
+  const dispatch = useDispatch();
+
+  const { loading: signupLoading, error: signupError } = useSelector(
+    (state) => state.userSignup
+  );
+
+  const handleSignup = (e) => {
     e.preventDefault();
+
     if (email === "" || password === "" || name === "") {
       setError("Please fill in all the fields");
       return;
     }
 
-    console.log({ password, email });
+    dispatch(userSignup({ email, password, name }));
   };
 
   const handleGoogleSignin = (e) => {
     e.preventDefault();
-    console.log("Sign In with Google");
+    dispatch(goolgeAuthSignUp(true));
   };
 
   return (
@@ -60,6 +72,11 @@ const Signup = () => {
           {error && (
             <FormError>
               <FormPara>{error}</FormPara>
+            </FormError>
+          )}
+          {signupError && (
+            <FormError>
+              <FormPara>{signupError}</FormPara>
             </FormError>
           )}
           <FormGroup>
@@ -87,24 +104,26 @@ const Signup = () => {
             />
           </FormGroup>
           <FormGroup>
-            <FormSubmitButton
-              type="submit"
-              onClick={(e) => handleFormSignin(e)}>
-              Sign In
+            <FormSubmitButton type="submit" onClick={handleSignup}>
+              {signupLoading ? (
+                <DotsSpinner loading={signupLoading} />
+              ) : (
+                " Sign Up"
+              )}
             </FormSubmitButton>
           </FormGroup>
           <FormOr>
             <FormPara>Or</FormPara>
           </FormOr>
           <FormGroup>
-            <GoogleButton onClick={(e) => handleGoogleSignin(e)}>
+            <GoogleButton onClick={handleGoogleSignin}>
               {" "}
-              <FaGoogle /> <FormPara>Sign In With Google</FormPara>
+              <FaGoogle /> <FormPara>Sign Up With Google</FormPara>
             </GoogleButton>
           </FormGroup>
           <FormLinkContainer>
             <p>
-              Already Have an Account ? <FormLink to="/login">Sign In</FormLink>
+              Already Have an Account ? <FormLink to="/">Sign In</FormLink>
             </p>
           </FormLinkContainer>
         </Form>

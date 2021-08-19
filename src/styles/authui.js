@@ -2,6 +2,9 @@ import styled from "styled-components/macro";
 
 const AuthSection = styled.div`
   display: flex;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const AuthLeftSection = styled.div`
@@ -13,17 +16,18 @@ const AuthLeftSection = styled.div`
   width: 80%;
   padding-bottom: 1rem;
   flex: 4;
-  @media (min-width: 1200px) {
-    flex: 4;
+  @media only screen and (max-width: 768px) {
+    flex: 1;
+    margin: 2rem auto;
   }
 `;
 
 const AuthRightSection = styled.div`
   position: relative;
 
-  flex: 6;
-  @media (min-width: 1200px) {
-    flex: 6;
+  @media only screen and (max-width: 768px) {
+    display: none;
+    flex: 0;
   }
   ${({ image }) =>
     image &&
@@ -57,7 +61,8 @@ const Image = styled.img`
 `;
 
 const AuthLogoContainer = styled.div`
-  margin-bottom: 8vh;
+  margin-bottom: 4vh;
+  margin-right: 4rem;
 `;
 
 const AuthRightTitle = styled.h2`

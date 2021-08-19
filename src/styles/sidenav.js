@@ -4,29 +4,39 @@ import { Link } from "react-router-dom";
 const SideNavWrapper = styled.div``;
 
 const SideNavHeader = styled.div`
-  background-color: var(--red-color);
+  background-color: var(--error-color);
   display: flex;
   justifycontent: space-evenly;
   align-items: center;
   padding: 0.4rem;
+  @media only screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 `;
 
 const SideNavHeaderLeft = styled.div`
   flex: 1;
 `;
 const SideNaveHeaderRight = styled.div`
-  flex: 2;
+  flex: 3;
+  @media only screen and (max-width: 768px) {
+    margin: 1rem;
+  }
 `;
 
 const Title = styled.h2`
   color: white;
-  font-size: 1.2rem;
+  font-size: 1rem;
 `;
 
 const UserImage = styled.img`
   width: 50px;
   height: 50px;
   border-radius: 50%;
+  @media only screen and (max-width: 768px) {
+    width: 60px;
+    height: 60px;
+  }
 `;
 const SideNavContent = styled.div`
   margin-top: 1rem;
@@ -48,6 +58,7 @@ const SideNavListItem = styled.li`
     ${SideNavListAnchor} {
       color: var(--black-color);
       font-weight: bold;
+      font-size: 1rem;
       //   background-color: var(--secondary-red-color);
       width: 100%;
       display: inline-block;

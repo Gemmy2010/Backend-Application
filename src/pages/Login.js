@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
-import styled from "styled-components";
+import { userSignin, goolgeAuthSignUp } from "../redux/actions/usersAction";
 
 import {
   AuthSection,
@@ -27,26 +28,34 @@ import {
   FormPara,
 } from "../styles/form";
 
-import firebase from "../firebase";
+import { DotsSpinner } from "../components/Spinner";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
 
+  const dispatch = useDispatch();
+
+  const { loading: signinLoading, error: signinError } = useSelector(
+    (state) => state.userSignin
+  );
+
   const handleFormSignin = (e) => {
     e.preventDefault();
+
     if (email === "" || password === "") {
       setError("Please fill in all the fields");
       return;
     }
 
-    console.log({ password, email });
+    dispatch(userSignin({ email, password }));
   };
 
   const handleGoogleSignin = (e) => {
     e.preventDefault();
-    console.log("Sign In with Google");
+
+    dispatch(goolgeAuthSignUp(false));
   };
 
   return (
@@ -59,6 +68,11 @@ const Login = () => {
           {error && (
             <FormError>
               <FormPara>{error}</FormPara>
+            </FormError>
+          )}
+          {signinError && (
+            <FormError>
+              <FormPara>{signinError}</FormPara>
             </FormError>
           )}
           <FormGroup>
@@ -81,7 +95,11 @@ const Login = () => {
             <FormSubmitButton
               type="submit"
               onClick={(e) => handleFormSignin(e)}>
-              Sign In
+              {signinLoading ? (
+                <DotsSpinner loading={signinLoading} />
+              ) : (
+                " Sign In"
+              )}
             </FormSubmitButton>
           </FormGroup>
           <FormOr>

@@ -21,6 +21,7 @@ const FormInputText = styled.input`
   padding: 0.5rem 1rem;
   line-height: 1.3rem;
   border: 1px solid grey;
+  outline: none;
 `;
 
 const FormSubmitButton = styled.button`
@@ -91,6 +92,17 @@ const FormError = styled.div`
   }
 `;
 
+const FormTextArea = styled.textarea`
+  margin-bottom: 1.3rem;
+  width: 100%;
+  border-radius: 2px;
+  padding: 0.5rem 1rem;
+  line-height: 1.3rem;
+  border: 1px solid grey;
+  outline: none;
+  resize: none;
+`;
+
 export {
   Form,
   FormLabel,
@@ -103,4 +115,5 @@ export {
   GoogleButton,
   FormPara,
   FormError,
+  FormTextArea,
 };
