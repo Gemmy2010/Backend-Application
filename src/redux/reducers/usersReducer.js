@@ -21,6 +21,12 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAIL,
+  GET_CHATUSER_REQUEST,
+  GET_CHATUSER_SUCCESS,
+  GET_CHATUSER_FAIL,
+  CREATE_CHATUSER_REQUEST,
+  CREATE_CHATUSER_SUCCESS,
+  CREATE_CHATUSER_FAIL,
 } from "../constants/usersContants";
 
 export const userSignupReducer = (
@@ -236,6 +242,67 @@ export const updateUserInfoReducer = (
       return {
         error: null,
         loading: false,
+      };
+    default:
+      return state;
+  }
+};
+export const getChatUserReducer = (
+  state = { loading: false, error: null },
+  action
+) => {
+  switch (action.type) {
+    case GET_CHATUSER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case GET_CHATUSER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case RESET_USER_STATE:
+      return {
+        error: null,
+        loading: false,
+      };
+    case GET_CHATUSER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const createChatUserReducer = (
+  state = { loading: false, error: null },
+  action
+) => {
+  switch (action.type) {
+    case CREATE_CHATUSER_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case CREATE_CHATUSER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case RESET_USER_STATE:
+      return {
+        error: null,
+        loading: false,
+      };
+    case CREATE_CHATUSER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
       };
     default:
       return state;

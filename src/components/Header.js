@@ -1,5 +1,5 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   HeaderWrapper,
   HeaderContainer,
@@ -13,8 +13,13 @@ import { showSideNav } from "../redux/actions/uiActions";
 import { FaBars } from "react-icons/fa";
 
 const Header = () => {
+  const { hidden } = useSelector((state) => state.navToggle);
+  console.log(hidden);
   const dispatch = useDispatch();
-  const handleSideNavigation = () => dispatch(showSideNav());
+  const handleSideNavigation = () => {
+    console.log("Clicked");
+    dispatch(showSideNav());
+  };
   return (
     <HeaderWrapper>
       <HeaderContainer>

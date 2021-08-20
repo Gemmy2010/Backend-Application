@@ -176,14 +176,12 @@ const Profile = () => {
               </ProfileProject>
             </ProfileSection>
 
-            <ProfileSection>
-              <ProfileProject>
-                <ProfileAnchor
-                  to={`/edit-profile/${firebase.auth().currentUser.uid}`}>
-                  Edit Profile
-                </ProfileAnchor>
-              </ProfileProject>
-            </ProfileSection>
+            <ProfileProject>
+              <ProfileAnchor
+                to={`/edit-profile/${firebase.auth().currentUser.uid}`}>
+                Edit Profile
+              </ProfileAnchor>
+            </ProfileProject>
           </ProfileBottom>
         </ProfileWrapper>
       </Content>

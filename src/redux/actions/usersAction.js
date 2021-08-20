@@ -21,9 +21,16 @@ import {
   UPDATE_USER_REQUEST,
   UPDATE_USER_SUCCESS,
   UPDATE_USER_FAIL,
+  GET_CHATUSER_REQUEST,
+  GET_CHATUSER_SUCCESS,
+  GET_CHATUSER_FAIL,
+  CREATE_CHATUSER_REQUEST,
+  CREATE_CHATUSER_SUCCESS,
+  CREATE_CHATUSER_FAIL,
 } from "../constants/usersContants";
 
 import firebase from "../../firebase";
+import axios from "axios";
 
 // Sign up user using email and password
 
@@ -192,4 +199,37 @@ export const updateUserProfileInfo = (userInfo, history) => (dispatch) => {
     .catch((error) =>
       dispatch({ type: UPDATE_USER_FAIL, payload: error.message })
     );
+};
+
+export const getChatUser = (user) => (dispatch) => {
+  dispatch({ type: GET_CHATUSER_REQUEST });
+  axios
+    .get("https://api.chatengine.io/users/me/", {
+      headers: {
+        "project-id": process.env.REACT_APP_CHAT_ENGINE_PROJECT_ID,
+        "user-name": user.name,
+        "user-secret": user.currentId,
+      },
+    })
+    .then(() => dispatch({ type: GET_CHATUSER_SUCCESS }))
+    .catch((error) => {
+      dispatch({ type: GET_CHATUSER_FAIL, payload: error.response });
+      dispatch(createChatUser(user));
+    });
+};
+
+export const createChatUser = (user) => (dispatch) => {
+  dispatch({ type: CREATE_CHATUSER_REQUEST });
+  let formdata = new FormData();
+  formdata.append("email", user.email);
+  formdata.append("username", user.name);
+  formdata.append("secret", user.currentId);
+  axios
+    .post("https://api.chatengine.io/users/", formdata, {
+      headers: {
+        "private-key": process.env.REACT_APP_CHAT_ENGINE_PRIVATE_KEY,
+      },
+    })
+    .then(() => dispatch({ type: CREATE_CHATUSER_SUCCESS }))
+    .catch((e) => dispatch({ type: CREATE_CHATUSER_FAIL }));
 };

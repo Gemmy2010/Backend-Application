@@ -350,19 +350,18 @@ const Profile = () => {
                 </FormGroup>
               </ProfileProject>
             </ProfileSection>
-            <ProfileSection>
-              <ProfileProject>
-                {userId === firebase.auth().currentUser.uid && (
-                  <ProfileAnchor to="#" onClick={handleUpdateProfile}>
-                    {updateLoading ? (
-                      <DotsSpinner loading={updateLoading} />
-                    ) : (
-                      "  Update Profile"
-                    )}
-                  </ProfileAnchor>
-                )}
-              </ProfileProject>
-            </ProfileSection>
+
+            <ProfileProject>
+              {userId === firebase.auth().currentUser.uid && (
+                <ProfileAnchor to="#" onClick={handleUpdateProfile}>
+                  {updateLoading ? (
+                    <DotsSpinner loading={updateLoading} />
+                  ) : (
+                    "  Update Profile"
+                  )}
+                </ProfileAnchor>
+              )}
+            </ProfileProject>
           </ProfileBottom>
         </ProfileWrapper>
       </Content>

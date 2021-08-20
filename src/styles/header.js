@@ -7,7 +7,7 @@ const HeaderContainer = styled.div`
 
 const HeaderWrapper = styled.div`
   padding: 8px 0px;
-  border-bottom: 3px solid var(--red-color);
+  border-bottom: 3px solid var(--error-color);
   box-shadow: var(--primary-box-shadow);
 
   ${HeaderContainer} {

@@ -5,7 +5,9 @@ import { Link } from "react-router-dom";
 const ProfileWrapper = styled.div`
   padding: 2rem;
 `;
-const ProfileParagraph = styled.p``;
+const ProfileParagraph = styled.p`
+  width: 80%;
+`;
 
 const ProfileTop = styled.div`
   display: flex;
@@ -72,6 +74,9 @@ const ProfileSubsection = styled.div`
   flex-wrap: wrap;
   ${FormGroup} {
     width: 40%;
+    @media only screen and (max-width: 768px) {
+      width: 100%;
+    }
     ${FormLabel} {
       margin-top: 1rem;
     }
@@ -95,8 +100,14 @@ const ProfileSubsectionItem = styled.div`
     display: flex;
     width: 100%;
     justify-content: space-between;
+    @media only screen and (max-width: 768px) {
+      flex-direction: column;
+    }
     ${FormInputText} {
       width: 48%;
+      @media only screen and (max-width: 768px) {
+        width: 100%;
+      }
     }
   }
   @media only screen and (max-width: 768px) {
@@ -109,6 +120,7 @@ const ProfileSubsectionItem = styled.div`
 const ProfileSubTitle = styled.h3`
   font-size: 0.9rem;
   color: grey;
+  text-transform: capitalize;
 `;
 
 const ProfileImage = styled.img`
@@ -173,6 +185,7 @@ const ProfileAnchor = styled(Link)`
   background-color: var(--error-color);
   color: white;
   padding: 0.5rem 2rem;
+  margin-top: 2rem;
   border-radius: 50px;
   &:hover {
     background-color: var(--secondary-red-color);

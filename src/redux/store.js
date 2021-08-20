@@ -9,6 +9,8 @@ import {
   getUserProfileReducer,
   uploadUserProfileReducer,
   updateUserInfoReducer,
+  getChatUserReducer,
+  createChatUserReducer,
 } from "./reducers/usersReducer";
 
 import { toggleNavReducer } from "./reducers/uiReducers";
@@ -23,6 +25,8 @@ const reducers = combineReducers({
   userProfile: getUserProfileReducer,
   imageUpload: uploadUserProfileReducer,
   updateUserInfo: updateUserInfoReducer,
+  getChatUser: getChatUserReducer,
+  createChatUser: createChatUserReducer,
   navToggle: toggleNavReducer,
 });
 

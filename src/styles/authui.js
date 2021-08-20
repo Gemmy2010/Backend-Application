@@ -13,29 +13,24 @@ const AuthLeftSection = styled.div`
   justify-content: center;
   align-items: center;
   height: 100vh;
-  width: 80%;
   padding-bottom: 1rem;
   flex: 4;
-  @media only screen and (max-width: 768px) {
-    flex: 1;
-    margin: 2rem auto;
-  }
 `;
 
 const AuthRightSection = styled.div`
   position: relative;
-
-  @media only screen and (max-width: 768px) {
-    display: none;
-    flex: 0;
-  }
+  flex: 6;
   ${({ image }) =>
     image &&
     `
   background-image:url(${image});
   background-size:cover;
   background-position:center;
-  `}
+  `};
+
+  @media only screen and (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const AuthRightOverLay = styled.div`
@@ -63,6 +58,10 @@ const Image = styled.img`
 const AuthLogoContainer = styled.div`
   margin-bottom: 4vh;
   margin-right: 4rem;
+  @media only screen and (max-width: 768px) {
+    margin-right: 8rem;
+    margin-top: 5rem;
+  }
 `;
 
 const AuthRightTitle = styled.h2`
