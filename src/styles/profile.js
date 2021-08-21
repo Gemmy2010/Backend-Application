@@ -1,5 +1,11 @@
 import styled from "styled-components";
-import { FormInputText, FormTextArea, FormGroup, FormLabel } from "./form";
+import {
+  FormInputText,
+  FormTextArea,
+  FormGroup,
+  FormLabel,
+  FormError,
+} from "./form";
 import { Link } from "react-router-dom";
 
 const ProfileWrapper = styled.div`
@@ -7,6 +13,20 @@ const ProfileWrapper = styled.div`
 `;
 const ProfileParagraph = styled.p`
   width: 80%;
+`;
+
+const ProfileAnchor = styled(Link)`
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  background-color: var(--error-color);
+  color: white;
+  padding: 0.5rem 2rem;
+  margin-top: 2rem;
+  border-radius: 50px;
+  &:hover {
+    background-color: var(--secondary-red-color);
+  }
 `;
 
 const ProfileTop = styled.div`
@@ -41,6 +61,14 @@ const ProfileTopRight = styled.div`
     width: 80%;
     border: 0.6px solid #bfbbbb;
     opacity: 0.7;
+  }
+  ${FormError} {
+    width: 80%;
+    margin: 1rem 0px;
+  }
+
+  ${ProfileAnchor} {
+    margin-top: 0.3rem;
   }
 `;
 
@@ -175,20 +203,6 @@ const ProfileProjectItem = styled.div`
   ${ProfileSubTitle} {
     color: white;
     font-size: 0.8rem;
-  }
-`;
-
-const ProfileAnchor = styled(Link)`
-  text-decoration: none;
-  display: flex;
-  justify-content: center;
-  background-color: var(--error-color);
-  color: white;
-  padding: 0.5rem 2rem;
-  margin-top: 2rem;
-  border-radius: 50px;
-  &:hover {
-    background-color: var(--secondary-red-color);
   }
 `;
 

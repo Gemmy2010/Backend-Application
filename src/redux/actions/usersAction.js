@@ -61,7 +61,7 @@ export const userSignup = (user) => (dispatch) => {
 // Sign up user using google auth
 
 export const goolgeAuthSignUp = (firstTime) => (dispatch) => {
-  dispatch({ type: USER_SIGNUP_REQUEST });
+  dispatch({ type: firstTime ? USER_SIGNUP_REQUEST : USER_SIGNIN_REQUEST });
   const googleProvider = new firebase.auth.GoogleAuthProvider();
 
   firebase
@@ -76,9 +76,14 @@ export const goolgeAuthSignUp = (firstTime) => (dispatch) => {
 
       if (firstTime) dispatch(createUserProfile(profileUser));
     })
-    .then(() => dispatch({ type: USER_SIGNUP_SUCCESS }))
+    .then(() =>
+      dispatch({ type: firstTime ? USER_SIGNUP_SUCCESS : USER_SIGNIN_SUCCESS })
+    )
     .catch((error) =>
-      dispatch({ type: USER_SIGNUP_FAIL, payload: error.message })
+      dispatch({
+        type: firstTime ? USER_SIGNUP_FAIL : USER_SIGNIN_FAIL,
+        payload: error.message,
+      })
     );
 };
 
@@ -162,6 +167,9 @@ export const uploadUserProfileImage = (file) => (dispatch) => {
 
   const uploadCompleted = () => {
     upload.snapshot.ref.getDownloadURL().then((snapshot) => {
+      firebase.auth().currentUser.updateProfile({
+        photoURL: snapshot,
+      });
       dispatch(updateProfileUrl(snapshot));
       dispatch({ type: UPLOAD_IMAGE_SUCCESS });
     });
@@ -188,13 +196,17 @@ export const updateProfileUrl = (photoUrl) => (dispatch) => {
 
 export const updateUserProfileInfo = (userInfo, history) => (dispatch) => {
   dispatch({ type: UPDATE_USER_REQUEST });
-
   firebase
     .firestore()
     .collection("users")
     .doc(firebase.auth().currentUser.uid)
     .update(userInfo)
-    .then(() => dispatch({ type: UPDATE_USER_SUCCESS }))
+    .then(() => {
+      firebase.auth().currentUser.updateProfile({
+        displayName: userInfo.name,
+      });
+      dispatch({ type: UPDATE_USER_SUCCESS });
+    })
     .then(() => history.push("/profile"))
     .catch((error) =>
       dispatch({ type: UPDATE_USER_FAIL, payload: error.message })
@@ -206,14 +218,17 @@ export const getChatUser = (user) => (dispatch) => {
   axios
     .get("https://api.chatengine.io/users/me/", {
       headers: {
-        "project-id": process.env.REACT_APP_CHAT_ENGINE_PROJECT_ID,
-        "user-name": user.name,
-        "user-secret": user.currentId,
+        "Project-ID": process.env.REACT_APP_CHAT_ENGINE_PROJECT_ID,
+        "User-Name": user.email,
+        "User-Secret": user.currentId,
       },
     })
     .then(() => dispatch({ type: GET_CHATUSER_SUCCESS }))
     .catch((error) => {
-      dispatch({ type: GET_CHATUSER_FAIL, payload: error.response });
+      dispatch({
+        type: GET_CHATUSER_FAIL,
+        payload: error.response,
+      });
       dispatch(createChatUser(user));
     });
 };
@@ -222,8 +237,9 @@ export const createChatUser = (user) => (dispatch) => {
   dispatch({ type: CREATE_CHATUSER_REQUEST });
   let formdata = new FormData();
   formdata.append("email", user.email);
-  formdata.append("username", user.name);
+  formdata.append("username", user.email);
   formdata.append("secret", user.currentId);
+  formdata.append("first_name", user.name);
   axios
     .post("https://api.chatengine.io/users/", formdata, {
       headers: {
@@ -231,5 +247,10 @@ export const createChatUser = (user) => (dispatch) => {
       },
     })
     .then(() => dispatch({ type: CREATE_CHATUSER_SUCCESS }))
-    .catch((e) => dispatch({ type: CREATE_CHATUSER_FAIL }));
+    .catch((error) => {
+      dispatch({
+        type: CREATE_CHATUSER_FAIL,
+        payload: error.response.data.message,
+      });
+    });
 };

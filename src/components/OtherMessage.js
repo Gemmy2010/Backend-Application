@@ -7,7 +7,7 @@ import {
   MessageAvatar,
 } from "../styles/messages";
 
-const OtherMessage = ({ message, lastMessage }) => {
+const OtherMessage = ({ message, lastMessage, isMyMessage }) => {
   const isFirstMessage =
     !lastMessage || lastMessage.sender.username !== message.sender.username;
 
@@ -17,7 +17,10 @@ const OtherMessage = ({ message, lastMessage }) => {
         <MessageAvatar background={message.sender && message.sender.avatar} />
       )}
       {message.attachments && message.attachments.length > 0 ? (
-        <MessageImage src={message.attachments[0].file} />
+        <MessageImage
+          src={message.attachments[0].file}
+          isMyMessage={isMyMessage}
+        />
       ) : (
         <OtherMessageContainer firstImage={isFirstMessage}>
           {message.text}

@@ -39,15 +39,22 @@ const SideNavigation = () => {
   } = useSelector((state) => state.userProfile);
 
   const currentUser = firebase.auth().currentUser?.uid;
-  useEffect(() => {
-    dispatch(getUserProfile(currentUser));
 
+  useEffect(() => {
     if (!currentUser) {
       history.push("/");
     } else {
       dispatch(getUserProfile(currentUser));
     }
-  }, [currentUser]);
+    // eslint-disable-next-line
+  }, [currentUser, signoutLoading]);
+
+  useEffect(() => {
+    if (profileError) {
+      history.push("home");
+    }
+    // eslint-disable-next-line
+  }, [profileError]);
 
   const handleSignOut = () => {
     dispatch(userSignout(history));
@@ -72,6 +79,7 @@ const SideNavigation = () => {
             </SideNavHeaderLeft>
             <SideNaveHeaderRight>
               <Title>{userProfile.name}</Title>
+              <SideNavListAnchor to="/profile">My Profile</SideNavListAnchor>
             </SideNaveHeaderRight>
           </>
         )}
@@ -94,9 +102,6 @@ const SideNavigation = () => {
               </SideNavListItem>
               <SideNavListItem>
                 <SideNavListAnchor to="/chats">Chat</SideNavListAnchor>
-              </SideNavListItem>
-              <SideNavListItem>
-                <SideNavListAnchor to="/profile">My Profile</SideNavListAnchor>
               </SideNavListItem>
             </SideNavList>
           </SideNavListItem>
@@ -124,7 +129,7 @@ const SideNavigation = () => {
                 <SideNavListAnchor to="/settings">Settings</SideNavListAnchor>
               </SideNavListItem>
               <SideNavListItem>
-                <SideNavListAnchor onClick={() => handleSignOut()}>
+                <SideNavListAnchor to="#" onClick={() => handleSignOut()}>
                   Logout{" "}
                   {signoutLoading && <DotsSpinner loading={signoutLoading} />}
                 </SideNavListAnchor>

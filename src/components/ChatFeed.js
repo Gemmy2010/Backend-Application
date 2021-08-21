@@ -40,11 +40,12 @@ const ChatFeed = (props) => {
         <FeedSection key={`message_${index}`}>
           <FeedSubsection>
             {isMyMessage ? (
-              <MyMessage message={message} />
+              <MyMessage message={message} isMyMessage={isMyMessage} />
             ) : (
               <OtherMessage
                 message={message}
                 lastMessage={message[lastMessage]}
+                isMyMessage={isMyMessage}
               />
             )}
           </FeedSubsection>

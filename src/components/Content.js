@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
 import { ContentWrapper, ContentRight, ContentLeft } from "../styles/content";
 
 import { SideNavigation } from "./index";

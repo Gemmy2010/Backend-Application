@@ -30,15 +30,11 @@ import { Header, Content } from "../components";
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const {
-    loading: profileLoading,
-    error: profileError,
-    user: userProfile,
-  } = useSelector((state) => state.userProfile);
+  const { user: userProfile } = useSelector((state) => state.userProfile);
 
   useEffect(() => {
     dispatch(getUserProfile(firebase.auth().currentUser.uid));
-  }, []);
+  }, [dispatch]);
   return (
     <>
       <Header />

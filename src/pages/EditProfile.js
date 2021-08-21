@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { useParams, useHistory } from "react-router-dom";
+import { useParams, useHistory, useLocation } from "react-router-dom";
 
 import {
   uploadUserProfileImage,
@@ -32,14 +32,17 @@ import {
   FormInputText,
   FormTextArea,
   FormLabel,
+  FormError,
+  FormPara,
 } from "../styles/form";
 
 import { Header, Content } from "../components";
-import { Centered } from "../styles/center";
 
-import { DotsSpinner, CircleSpinner } from "../components/Spinner";
+import { DotsSpinner } from "../components/Spinner";
 
 const Profile = () => {
+  const [error, setError] = useState(null);
+
   const [name, setName] = useState("");
 
   const [location, setLoction] = useState("");
@@ -84,15 +87,13 @@ const Profile = () => {
 
   const { userId } = useParams();
 
+  const { pathname } = useLocation();
+
   const { loading: uploadLoading, error: uploadingError } = useSelector(
     (state) => state.imageUpload
   );
 
-  const {
-    loading: profileLoading,
-    error: profileError,
-    user: userProfile,
-  } = useSelector((state) => state.userProfile);
+  const { user: userProfile } = useSelector((state) => state.userProfile);
 
   const { loading: updateLoading, error: updateError } = useSelector(
     (state) => state.updateUserInfo
@@ -104,7 +105,15 @@ const Profile = () => {
     if (currentUser !== userId) {
       history.push("/profile");
     }
+    // eslint-disable-next-line
   }, [currentUser, userId]);
+
+  useEffect(() => {
+    if (error || uploadingError || updateError) {
+      window.scrollTo(0, 0);
+    }
+    // eslint-disable-next-line
+  }, [[error, uploadingError, updateError, pathname]]);
 
   useEffect(() => {
     dispatch(getUserProfile(firebase.auth().currentUser.uid));
@@ -145,7 +154,7 @@ const Profile = () => {
     setSecondProject(userProfile?.secondProject);
 
     // eslint-disable-next-line
-  }, [uploadLoading, dispatch, userId]);
+  }, [uploadLoading, dispatch, userId, userProfile?.email]);
 
   const changeProfileImage = () => fileInput.current.click();
 
@@ -156,34 +165,41 @@ const Profile = () => {
   };
 
   const handleUpdateProfile = () => {
-    dispatch(
-      updateUserProfileInfo(
-        {
-          name,
-          age,
-          location,
-          job,
-          other,
-          firstSkill,
-          secondSkill,
-          thirdSkill,
-          forthSkill,
-          bio,
-          firstProject,
-          secondProject,
-        },
-        history
-      )
-    );
+    if (name === "" || bio === "") {
+      setError("Please Fill Your Name and Bio");
+      return;
+    }
+    const updateUser = {
+      name: name,
+      age: age ? age : "Not Provided",
+      location: location ? location : "Not Provided",
+      job: job ? job : "Not Provided",
+      other: other ? other : "Not Provided",
+      bio: bio ? bio : "Edit  you profile to see bio",
+      firstProject: firstProject ? firstProject : "Not Provided",
+      secondProject: secondProject ? secondProject : "Not Provided",
+      firstSkill: {
+        name: firstSkill.name ? firstSkill.name : "First Skill",
+        level: firstSkill.level ? firstSkill.level : 0,
+      },
+
+      secondSkill: {
+        name: secondSkill.name ? secondSkill.name : "Second Skill",
+        level: secondSkill.level ? secondSkill.level : 0,
+      },
+
+      thirdSkill: {
+        name: thirdSkill.name ? thirdSkill.name : "Third Skill",
+        level: thirdSkill.level ? thirdSkill.level : 0,
+      },
+      forthSkill: {
+        name: forthSkill.name ? forthSkill.name : "Forth Skill",
+        level: forthSkill.level ? forthSkill.level : 0,
+      },
+    };
+    dispatch(updateUserProfileInfo(updateUser, history));
   };
 
-  // if (profileLoading) {
-  //   return (
-  //     <Centered>
-  //       <CircleSpinner loading={profileLoading} />
-  //     </Centered>
-  //   );
-  // }
   return (
     <>
       <Header />
@@ -208,6 +224,21 @@ const Profile = () => {
               />
             </ProfileTopLeft>
             <ProfileTopRight>
+              {error && (
+                <FormError>
+                  <FormPara>{error}</FormPara>
+                </FormError>
+              )}
+              {uploadingError && (
+                <FormError>
+                  <FormPara>{uploadingError}</FormPara>
+                </FormError>
+              )}
+              {updateError && (
+                <FormError>
+                  <FormPara>{updateError}</FormPara>
+                </FormError>
+              )}
               <FormInputText
                 value={name}
                 onChange={({ target: { value } }) => setName(value)}
@@ -266,12 +297,14 @@ const Profile = () => {
                 <ProfileSubsectionItem>
                   <FormGroup>
                     <FormInputText
+                      placeholder="Skill Name"
                       value={firstSkill.name}
                       onChange={({ target: { value } }) =>
                         setFirstSkill({ ...firstSkill, name: value })
                       }
                     />
                     <FormInputText
+                      placeholder="Skill %"
                       value={firstSkill.level}
                       onChange={({ target: { value } }) =>
                         setFirstSkill({ ...firstSkill, level: value })
@@ -282,12 +315,14 @@ const Profile = () => {
                 <ProfileSubsectionItem>
                   <FormGroup>
                     <FormInputText
+                      placeholder="Skill Name"
                       value={secondSkill.name}
                       onChange={({ target: { value } }) =>
                         setSecondSkill({ ...secondSkill, name: value })
                       }
                     />
                     <FormInputText
+                      placeholder="Skill %"
                       value={secondSkill.level}
                       onChange={({ target: { value } }) =>
                         setSecondSkill({ ...secondSkill, level: value })
@@ -298,12 +333,14 @@ const Profile = () => {
                 <ProfileSubsectionItem>
                   <FormGroup>
                     <FormInputText
+                      placeholder="Skill Name"
                       value={thirdSkill.name}
                       onChange={({ target: { value } }) =>
                         setThirdSkill({ ...thirdSkill, name: value })
                       }
                     />
                     <FormInputText
+                      placeholder="Skill %"
                       value={thirdSkill.level}
                       onChange={({ target: { value } }) =>
                         setThirdSkill({ ...thirdSkill, level: value })
@@ -320,6 +357,7 @@ const Profile = () => {
                       }
                     />
                     <FormInputText
+                      placeholder="Skill %"
                       value={forthSkill.level}
                       onChange={({ target: { value } }) =>
                         setForthSkill({ ...forthSkill, level: value })

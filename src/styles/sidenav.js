@@ -14,6 +14,11 @@ const SideNavHeader = styled.div`
   }
 `;
 
+const SideNavListAnchor = styled(Link)`
+  text-decoration: none;
+  color: grey;
+`;
+
 const SideNavHeaderLeft = styled.div`
   flex: 1;
 `;
@@ -21,6 +26,11 @@ const SideNaveHeaderRight = styled.div`
   flex: 3;
   @media only screen and (max-width: 768px) {
     margin: 1rem;
+  }
+  ${SideNavListAnchor} {
+    color: white;
+    font-size: 0.8rem;
+    font-weight: bold;
   }
 `;
 
@@ -47,10 +57,6 @@ const SideNavList = styled.ul`
   margin: 16px 8px;
 `;
 
-const SideNavListAnchor = styled(Link)`
-  text-decoration: none;
-  color: grey;
-`;
 const SideNavListItem = styled.li`
   margin: 4px 0px;
   ${SideNavList} {

@@ -16,14 +16,14 @@ const ChatFormInput = styled.input`
 `;
 
 const ChatFormContainer = styled.div`
-  width: 70%;
+  width: 90%;
   margin: auto;
 `;
 
 const ChatFormButton = styled.button`
   padding: 0.5rem 0.5rem;
   width: 100%;
-  margin-top: 10px;
+  margin: 1rem 0rem;
   border: none;
   outline: none;
   color: white;

@@ -17,6 +17,15 @@ const MessageImage = styled.img`
   max-width: 150px;
   min-height: 100px;
   min-width: 100px;
+  float: left;
+  margin-left: 20px;
+
+  ${({ isMyMessage }) =>
+    isMyMessage &&
+    `
+  float: right;
+  margin-right:20px;
+  `}
 `;
 
 const Form = styled.form`
@@ -85,6 +94,9 @@ const OtherMessageContainer = styled.div`
   border-radius: 0px 16px 0px 16px;
   box-shadow: var(--primary-box-shadow);
   max-width: 70%;
+  ${MessageImage} {
+    float: left;
+  }
 `;
 
 const OtherMessageRow = styled.div`
